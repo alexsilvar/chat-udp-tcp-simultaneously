@@ -340,6 +340,7 @@ public class FormClient extends javax.swing.JFrame {
                             //r.start();
                         } else if (line.startsWith("MESSAGE")) {
                             txa_received.append(line.substring(8) + "\n");
+                            txa_received.setCaretPosition(txa_received.getDocument().getLength());
                         } else if (line.startsWith("USERS")) {
                             list_users.setListData(line.substring(6).split(";"));
                         }
@@ -442,6 +443,7 @@ public class FormClient extends javax.swing.JFrame {
                             break;
                         }
                         txa_received.append(line + "\n");
+                        txa_received.setCaretPosition(txa_received.getDocument().getLength());
                     } else if (line.startsWith("USERS")) {
                         list_users.setListData(line.substring(6).split(";"));
                     }

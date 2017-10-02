@@ -15,6 +15,7 @@ import java.util.*;
  */
 public class Server {
 
+    ////Modificação pika
     private static int portTCP = 9001;
     private static int portUDP = 9002;
     private static HashSet<User> usuarios = new HashSet<User>();
