@@ -66,11 +66,12 @@ public class Server {
             }
             for (User usuario : usuarios) {
                 if (usuario.getName().equals(nome)) {
-                    usuario.getMessage("MESSAGE <" + user.getName() + ">: " + msg);
+                    usuario.getMessage("MESSAGE FROM: <" + user.getName() + ">: " + msg);
+                    user.getMessage("MESSAGE TO: <" + usuario.getName() + ">: " + msg);
                     return;
                 }
             }
-            user.getMessage("MESSAGE Usuario " + nome + "nao conectado");
+            user.getMessage("MESSAGE Usuario " + nome + " nao conectado");
         }
 
         private void broadcastMessage(String msg) {
@@ -97,7 +98,7 @@ public class Server {
             if (!s.equals("")) {
                 s = s.substring(0, s.length() - 1);
                 for (User usuario : usuarios) {
-                    usuario.getMessage("MESSAGE " + user.getName() + " se conectou");
+                    //
                     usuario.getMessage("USERS " + s);
                 }
             }
@@ -146,6 +147,7 @@ public class Server {
                 }
                 user.getMessage("NAMEACCEPTED");
                 super.listUsers();
+                super.broadcastMessage(" se conectou");
                 while (true) {
                     String msg = ((UserTCP) user).getReader().readLine();
                     if (msg == null) {
@@ -174,6 +176,7 @@ public class Server {
                     }
                 }
                 try {
+                    super.listUsers();
                     client.close();
                 } catch (IOException e) {
                 }
@@ -217,6 +220,7 @@ public class Server {
                             usuarios.add(user = new UserUDP(new DatagramPacket(resposta.getBytes(), 0, resposta.length(), request.getAddress(), request.getPort()), aSocket, msg));
                             user.getMessage(resposta);
                             super.listUsers();
+                            super.broadcastMessage(" se conectou");
                         } else {
                             //Nome indisponível e enviando ao remetente a informação de que deve informar outro nickname
                             DatagramPacket dp = new DatagramPacket(resposta.getBytes(), 0, resposta.length(), request.getAddress(), request.getPort());
@@ -232,6 +236,7 @@ public class Server {
                         //solicitacao de desconexão
                         super.logOut();
                         usuarios.remove(findUser());
+                        super.listUsers();
                     } else {
                         super.broadcastMessage(msg);
                     }
